@@ -117,7 +117,27 @@
   <textarea id="content_xml" class="content" wrap="off"></textarea>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">
+    <!--  Begin: Widgets Category -->
+    <category name="Widgets" colour="160">
+      <block type="app"></block>
+      <block type="label"></block>
+      <block type="button"></block>
+    </category>
+    <!--  End  -->
+
+    <!--  Begin: Events Category -->
+    <category name="Events" colour="%{BKY_PROCEDURES_HUE}" custom="WIDGET"></category>
+    <!--  End  -->
+  
+    <!--  Begin: Pins Category -->
+    <category name="Pins" colour="330">
+        <block type="digital_read_pin"></block>
+        <block type="digital_write_pin"></block>
+        <block type="digital_toggle_pin"></block>
+    </category>
+    <!--  End  -->
+    
+    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">      
       <block type="controls_if"></block>
       <block type="logic_compare"></block>
       <block type="logic_operation"></block>
@@ -127,6 +147,12 @@
       <block type="logic_ternary"></block>
     </category>
     <category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
+
+      <!--  Begin: Forever and On Start -->      
+      <block type="on_start"></block>
+      <block type="forever"></block>
+      <!--  End -->
+
       <block type="controls_repeat_ext">
         <value name="TIMES">
           <shadow type="math_number">
@@ -422,6 +448,15 @@
         </value>
       </block>
     </category>
+
+    <!--  Begin: CoAP Category -->
+    <category name="CoAP" colour="160">
+      <block type="coap"></block>
+      <block type="field"></block>
+      <block type="wait"></block>
+    </category>
+    <!--  End: CoAP Category -->
+
     <sep></sep>
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>

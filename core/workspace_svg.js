@@ -194,8 +194,7 @@ Blockly.WorkspaceSvg = function(
   }
 
   //// TODO
-  ////console.log('Blockly.Widgets', Blockly.Widgets);
-  console.log('Blockly.Widgets.flyoutCategory', Blockly.Widgets.flyoutCategory);
+  ////console.log('Blockly.Widgets.flyoutCategory', Blockly.Widgets.flyoutCategory);
   if (Blockly.Widgets && Blockly.Widgets.flyoutCategory) {
     this.registerToolboxCategoryCallback("WIDGET",  ////  TODO
         Blockly.Widgets.flyoutCategory);
