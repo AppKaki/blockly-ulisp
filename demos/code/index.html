@@ -4,16 +4,42 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="google" value="notranslate">
-  <title>Blockly Demo:</title>
+  <title>uLisp Blockly</title>
+
+  <!--  Load Blockly Stylesheet and our override  -->
   <link rel="stylesheet" href="style.css">
   <script src="/storage.js"></script>
-  <script src="../../blockly_compressed.js"></script>
+
+  <!--  Load Blockly and Google Closure  -->
+  <script src="../../blockly_uncompressed.js"></script>
+
+  <!--  Load Blocks  -->
   <script src="../../blocks_compressed.js"></script>
+
+  <!--  Load Code Generators  -->
   <script src="../../javascript_compressed.js"></script>
   <script src="../../python_compressed.js"></script>
   <script src="../../php_compressed.js"></script>
   <script src="../../lua_compressed.js"></script>
   <script src="../../dart_compressed.js"></script>
+
+  <!--  Load Lisp Code Generator  -->
+  <script src="../../generators/lisp.js"></script>
+
+  <!--  Load Lisp Blocks and Lisp Block Code Generators  -->
+  
+  <!--  Load Lisp Functions. TODO: Package into lisp_compressed.js  -->
+  <script src="../../generators/lisp/colour.js"></script>
+  <script src="../../generators/lisp/lists.js"></script>
+  <script src="../../generators/lisp/logic.js"></script>
+  <script src="../../generators/lisp/loops.js"></script>
+  <script src="../../generators/lisp/math.js"></script>
+  <script src="../../generators/lisp/procedures.js"></script>
+  <script src="../../generators/lisp/text.js"></script>
+  <script src="../../generators/lisp/variables.js"></script>  
+  <script src="../../generators/lisp/variables_dynamic.js"></script>
+  <!--  TODO: End  -->
+
   <script src="code.js"></script>
 </head>
 <body>
@@ -35,6 +61,8 @@
         <table width="100%">
           <tr id="tabRow" height="1em">
             <td id="tab_blocks" class="tabon">...</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_lisp" class="taboff tab_collapse">Lisp</td>
             <td class="tabmin tab_collapse">&nbsp;</td>
             <td id="tab_javascript" class="taboff tab_collapse">JavaScript</td>
             <td class="tabmin tab_collapse">&nbsp;</td>
@@ -72,6 +100,7 @@
     </tr>
   </table>
   <div id="content_blocks" class="content"></div>
+  <pre id="content_lisp" class="content prettyprint lang-lisp"></pre>
   <pre id="content_javascript" class="content prettyprint lang-js"></pre>
   <pre id="content_python" class="content prettyprint lang-py"></pre>
   <pre id="content_php" class="content prettyprint lang-php"></pre>
