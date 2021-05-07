@@ -117,8 +117,16 @@
   <textarea id="content_xml" class="content" wrap="off"></textarea>
 
   <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
-    <!--  Begin: Widgets Category -->
-    <category name="Widgets" colour="160">
+    <!--  Begin: Pins Category -->
+    <category name="GPIO" colour="330">
+      <block type="digital_read_pin"></block>
+      <block type="digital_write_pin"></block>
+      <block type="digital_toggle_pin"></block>
+  </category>
+  <!--  End  -->
+  
+  <!--  Begin: Widgets Category -->
+    <category name="I2C" colour="160">
       <block type="app"></block>
       <block type="label"></block>
       <block type="button"></block>
@@ -126,31 +134,15 @@
     <!--  End  -->
 
     <!--  Begin: Events Category -->
-    <category name="Events" colour="%{BKY_PROCEDURES_HUE}" custom="WIDGET"></category>
+    <category name="SPI" colour="%{BKY_PROCEDURES_HUE}" custom="WIDGET"></category>
     <!--  End  -->
   
-    <!--  Begin: Pins Category -->
-    <category name="Pins" colour="330">
-        <block type="digital_read_pin"></block>
-        <block type="digital_write_pin"></block>
-        <block type="digital_toggle_pin"></block>
-    </category>
-    <!--  End  -->
-    
-    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">      
-      <block type="controls_if"></block>
-      <block type="logic_compare"></block>
-      <block type="logic_operation"></block>
-      <block type="logic_negate"></block>
-      <block type="logic_boolean"></block>
-      <block type="logic_null"></block>
-      <block type="logic_ternary"></block>
-    </category>
     <category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
 
       <!--  Begin: Forever and On Start -->      
       <block type="on_start"></block>
       <block type="forever"></block>
+      <block type="wait"></block>
       <!--  End -->
 
       <block type="controls_repeat_ext">
@@ -181,6 +173,17 @@
       <block type="controls_forEach"></block>
       <block type="controls_flow_statements"></block>
     </category>
+
+    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">      
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null"></block>
+      <block type="logic_ternary"></block>
+    </category>
+    
     <category name="%{BKY_CATMATH}" colour="%{BKY_MATH_HUE}">
       <block type="math_number">
         <field name="NUM">123</field>
@@ -453,7 +456,6 @@
     <category name="CoAP" colour="160">
       <block type="coap"></block>
       <block type="field"></block>
-      <block type="wait"></block>
     </category>
     <!--  End: CoAP Category -->
 

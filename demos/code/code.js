@@ -451,6 +451,27 @@ Code.init = function() {
   Blockly.JavaScript.addReservedWords('code,timeouts,checkTimeout');
 
   Code.loadBlocks('');
+  
+  //// TODO: Load the Lisp Custom Blocks.
+  var blocks = mynewt_blocks;  // mynewt_blocks defined in mynewt_blocks.js
+  // For each Block...
+  blocks.forEach(block => {
+    // Register the Block with Blockly.
+    Blockly.Blocks[block.type] = {
+      init: function() {
+        this.jsonInit(block);
+        // Assign 'this' to a variable for use in the tooltip closure below.
+        var thisBlock = this;
+        /*
+        this.setTooltip(function() {
+          return 'Add a number to variable "%1".'.replace('%1',
+              thisBlock.getFieldValue('VAR'));
+        });
+        */
+      }
+    };    
+  });
+  ////
 
   if ('BlocklyStorage' in window) {
     // Hook a save function onto unload.

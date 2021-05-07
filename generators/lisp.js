@@ -23,6 +23,9 @@ goog.require('Blockly.utils.string');
  */
 Blockly.Lisp = new Blockly.Generator('Lisp');
 
+//  Indent with 4 spaces instead of default 2
+Blockly.Lisp.INDENT = '    ';
+
 /**
  * List of illegal variable names.
  * This is not intended to be a security feature.  Blockly is 100% client-side,
