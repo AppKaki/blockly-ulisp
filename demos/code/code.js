@@ -234,14 +234,14 @@ Code.LANG = Code.getLang();
  * List of tab names.
  * @private
  */
-Code.TABS_ = ['blocks', 'javascript', 'php', 'python', 'dart', 'lua', 'xml'];
+Code.TABS_ = ['blocks', 'lisp', 'javascript', 'php', 'python', 'dart', 'lua', 'xml'];
 
 /**
  * List of tab names with casing, for display in the UI.
  * @private
  */
 Code.TABS_DISPLAY_ = [
-  'Blocks', 'JavaScript', 'PHP', 'Python', 'Dart', 'Lua', 'XML',
+  'Blocks', 'Lisp', 'JavaScript', 'PHP', 'Python', 'Dart', 'Lua', 'XML',
 ];
 
 Code.selected = 'blocks';
@@ -324,6 +324,8 @@ Code.renderContent = function() {
     var xmlText = Blockly.Xml.domToPrettyText(xmlDom);
     xmlTextarea.value = xmlText;
     xmlTextarea.focus();
+  } else if (content.id == 'content_lisp') {
+    Code.attemptCodeGeneration(Blockly.Lisp);
   } else if (content.id == 'content_javascript') {
     Code.attemptCodeGeneration(Blockly.JavaScript);
   } else if (content.id == 'content_python') {
