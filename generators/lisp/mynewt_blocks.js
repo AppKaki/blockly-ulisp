@@ -11,16 +11,16 @@ var mynewt_blocks =
       "name": "PIN",
       "options": [
         [
-          "PA1",
-          "MCU_GPIO_PORTA!(1)"
+          "11",
+          "11"
         ],
         [
-          "PB1",
-          "MCU_GPIO_PORTB!(1)"
+          "12",
+          "12"
         ],
         [
-          "PC13",
-          "MCU_GPIO_PORTC!(13)"
+          "13",
+          "13"
         ]
       ]
     }
@@ -91,16 +91,16 @@ var mynewt_blocks =
       "name": "PIN",
       "options": [
         [
-          "PA1",
-          "MCU_GPIO_PORTA!(1)"
+          "11",
+          "11"
         ],
         [
-          "PB1",
-          "MCU_GPIO_PORTB!(1)"
+          "12",
+          "12"
         ],
         [
-          "PC13",
-          "MCU_GPIO_PORTC!(13)"
+          "13",
+          "13"
         ]
       ]
     }
@@ -119,16 +119,16 @@ var mynewt_blocks =
       "name": "PIN",
       "options": [
         [
-          "PA1",
-          "MCU_GPIO_PORTA!(1)"
+          "11",
+          "11"
         ],
         [
-          "PB1",
-          "MCU_GPIO_PORTB!(1)"
+          "12",
+          "12"
         ],
         [
-          "PC13",
-          "MCU_GPIO_PORTC!(13)"
+          "13",
+          "13"
         ]
       ]
     },
