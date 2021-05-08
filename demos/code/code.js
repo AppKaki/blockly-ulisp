@@ -574,6 +574,15 @@ Code.initLanguage = function() {
  * Just a quick and dirty eval.  Catch infinite loops.
  */
 Code.runJS = function() {
+  //// TODO: Run the Lisp code on BL602 with Web Serial API
+  var code = Blockly.Lisp.workspaceToCode(Code.workspace);
+  console.log(code);
+
+  //  If this line doesn't start with "(", merge with previous line
+
+  ////
+
+  /* TODO: Run the code in Web Serial API
   Blockly.JavaScript.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
   var timeouts = 0;
   var checkTimeout = function() {
@@ -588,6 +597,7 @@ Code.runJS = function() {
   } catch (e) {
     alert(MSG['badCode'].replace('%1', e));
   }
+  */
 };
 
 /**
