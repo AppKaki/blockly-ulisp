@@ -14,13 +14,19 @@ https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
 
 The following have been added into the existing [`generators`](generators) folder to generate Lisp code and to add blocks specific to uLisp...
 
-[`generators/lisp.js`](generators/lisp.js): Main interface for Lisp Code Generator
+-   [`generators/lisp.js`](generators/lisp.js): Main interface for Lisp Code Generator
 
-[`generators/lisp`](generators/lisp): Lisp Code Generator for various blocks
+-   [`generators/lisp`](generators/lisp): Lisp Code Generator for various blocks
 
-[`generators/lisp/lisp_library.xml`](generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
+-   [`generators/lisp/lisp_library.xml`](generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
 
-Based on Visual Embedded Rust...
+The Lisp Code Generator is __incomplete__. The only blocks supported are...
+
+1.  Loop
+
+1.  GPIO Digital Write
+
+The Lisp Code Generator is based on Visual Embedded Rust...
 
 https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming
 
@@ -32,7 +38,7 @@ https://appkaki.github.io/blockly-ulisp/demos/code/
 
 The Blockly demo at [`demos/code`](demos/code) has been customised to include the Lisp Code Generator...
 
-[`demos/code/code.js`](demos/code/code.js): Customised to load the Lisp Code Generator
+-   [`demos/code/code.js`](demos/code/code.js): Customised to load the Lisp Code Generator
 
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 
