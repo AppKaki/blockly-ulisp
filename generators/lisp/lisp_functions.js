@@ -47,32 +47,8 @@ Blockly.Lisp['forever'] = function(block) {
   }
   //  TODO: Allow multiple Background Tasks for multiple `forever` blocks.
   code = [
-    '/// Will be run as Background Task that never terminates',
-    'fn task_func(arg: Ptr) -> MynewtResult<()> {',
-    '    // Loop forever',
-    '    loop {',
-    code,
-    '    }',
-    '    // Never comes here',
-    '    Ok(())',
-    '}',
-    '',
-    '/// Start the Background Task',
-    'fn start_task() -> MynewtResult<()> {',
-    '    os::task_init(          //  Create a new task and start it...',
-    '        out!( TASK_OBJ ),   //  Task object will be saved here',
-    '        strn!( "forever" ), //  Name of task',
-    '        Some( task_func ),  //  Function to execute when task starts',
-    '        NULL,  //  Argument to be passed to above function',
-    '        10,    //  Task priority: highest is 0, lowest is 255 (main task is 127)',
-    '        os::OS_WAIT_FOREVER as u32, //  Don\'t do sanity / watchdog checking',
-    '        out!( TASK_STACK ),         //  Stack space for the task',
-    '        TASK_STACK_SIZE as u16      //  Size of the stack (in 4-byte units)',
-    '    ) ? ;                           //  `?` means check for error',
-    '    // Return success to `main()` function',
-    '    Ok(())',
-    '}',
-    ''
+    '( loop  ',
+    code + ' )',
   ].join('\n');
   return code;
 };
@@ -80,8 +56,7 @@ Blockly.Lisp['forever'] = function(block) {
 Blockly.Lisp['wait'] = function(block) {
   var number_duration = block.getFieldValue('DURATION');
   var code = [
-    '// Wait ' + number_duration + ' second(s)',
-    'os::time_delay(' + number_duration + ' * OS_TICKS_PER_SEC) ? ;',
+    '( delay ' + (number_duration * 1000) + ' )',
     ''
   ].join('\n');
   return code;
@@ -111,7 +86,7 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
   var dropdown_value = block.getFieldValue('VALUE');
   //  TODO: Call init_out only once,
   var code = [
-    '( pinmode      ' + dropdown_pin + ' :output )',
+    '( pinmode ' + dropdown_pin + ' :output )',
     '( digitalwrite ' + dropdown_pin + ' ' + dropdown_value + ' )',
     ''
   ].join('\n');  
