@@ -126,17 +126,26 @@
   <!--  End  -->
   
   <!--  Begin: Widgets Category -->
-    <category name="I2C" colour="160">
+    <category name="I2C" colour="220">
       <block type="app"></block>
       <block type="label"></block>
       <block type="button"></block>
     </category>
     <!--  End  -->
 
+    <!--  Begin: CoAP Category -->
+    <category name="SPI" colour="160">
+      <block type="coap"></block>
+      <block type="field"></block>
+    </category>
+    <!--  End: CoAP Category -->
+    
     <!--  Begin: Events Category -->
-    <category name="SPI" colour="%{BKY_PROCEDURES_HUE}" custom="WIDGET"></category>
+    <category name="WiFi" colour="%{BKY_PROCEDURES_HUE}" custom="WIDGET"></category>
     <!--  End  -->
-  
+
+    <sep></sep>
+
     <category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
 
       <!--  Begin: Forever and On Start -->      
@@ -451,13 +460,6 @@
         </value>
       </block>
     </category>
-
-    <!--  Begin: CoAP Category -->
-    <category name="CoAP" colour="160">
-      <block type="coap"></block>
-      <block type="field"></block>
-    </category>
-    <!--  End: CoAP Category -->
 
     <sep></sep>
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
