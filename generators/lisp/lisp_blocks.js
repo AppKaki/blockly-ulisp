@@ -1,6 +1,6 @@
-/// Custom blocks exported from Block Exporter based on mynewt_library.xml.
-/// See mynewt_functions.js for Code Generator Functions.
-var mynewt_blocks =
+/// Custom blocks exported from Block Exporter based on lisp_library.xml.
+/// See lisp_functions.js for Code Generator Functions.
+var lisp_blocks =
 // Begin Block Exporter
 [{
   "type": "digital_toggle_pin",

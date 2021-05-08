@@ -453,7 +453,7 @@ Code.init = function() {
   Code.loadBlocks('');
   
   //// TODO: Load the Lisp Custom Blocks.
-  var blocks = mynewt_blocks;  // mynewt_blocks defined in mynewt_blocks.js
+  var blocks = lisp_blocks;  // lisp_blocks defined in lisp_blocks.js
   // For each Block...
   blocks.forEach(block => {
     // Register the Block with Blockly.

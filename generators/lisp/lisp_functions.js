@@ -1,5 +1,5 @@
-/// Code Generator Functions for Custom Blocks in mynewt_blocks.js.
-/// Initially exported by Block Exporter from mynewt_library.xml.
+/// Code Generator Functions for Custom Blocks in lisp_blocks.js.
+/// Initially exported by Block Exporter from lisp_library.xml.
 
 
 Blockly.Lisp['coap'] = function(block) {
