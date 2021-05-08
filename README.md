@@ -24,6 +24,8 @@ The Lisp Code Generator is __incomplete__. The only blocks supported are...
 
 1.  Loop
 
+1.  Wait
+
 1.  GPIO Digital Write
 
 The Lisp Code Generator is based on Visual Embedded Rust...
