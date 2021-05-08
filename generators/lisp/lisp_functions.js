@@ -39,16 +39,15 @@ Blockly.Lisp['field'] = function(block) {
 
 Blockly.Lisp['forever'] = function(block) {
   var statements_stmts = Blockly.Lisp.statementToCode(block, 'STMTS');
-  // Indent every line twice.
+  // Indent every line
   var code = statements_stmts;
   if (code) {
-    code = Blockly.Lisp.prefixLines(code, Blockly.Lisp.INDENT);
     code = Blockly.Lisp.prefixLines(code, Blockly.Lisp.INDENT);
   }
   //  TODO: Allow multiple Background Tasks for multiple `forever` blocks.
   code = [
     '( loop  ',
-    code + ' )',
+    code + ')',
   ].join('\n');
   return code;
 };

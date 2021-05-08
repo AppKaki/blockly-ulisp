@@ -23,8 +23,8 @@ goog.require('Blockly.utils.string');
  */
 Blockly.Lisp = new Blockly.Generator('Lisp');
 
-//  Indent with 4 spaces instead of default 2
-Blockly.Lisp.INDENT = '    ';
+//  Indent with 2 spaces
+Blockly.Lisp.INDENT = '  ';
 
 /**
  * List of illegal variable names.
@@ -130,12 +130,6 @@ Blockly.Lisp.init = function(workspace) {
  * @return {string} Completed code.
  */
 Blockly.Lisp.finish = function(code) {
-  // Indent every line.
-  if (code) {
-    code = Blockly.Lisp.prefixLines(code, Blockly.Lisp.INDENT);
-  }
-  ////code = 'main() {\n' + code + '}';
-
   // Convert the definitions dictionary into a list.
   var imports = [];
   var definitions = [];
