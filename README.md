@@ -40,7 +40,9 @@ https://appkaki.github.io/blockly-ulisp/demos/code/
 
 The Blockly demo at [`demos/code`](demos/code) has been customised to include the Lisp Code Generator...
 
--   [`demos/code/code.js`](demos/code/code.js): Customised to load the Lisp Code Generator
+-   [`demos/code/index.html`](demos/code/index.html): Customised to load the Lisp Code Generator and Lisp Blocks
+
+-   [`demos/code/code.js`](demos/code/code.js): Customised to load the Lisp Code Generator and Lisp Blocks
 
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 
