@@ -20,6 +20,10 @@ The following have been added into the existing [`generators`](generators) folde
 
 [`generators/lisp/lisp_library.xml`](generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
 
+Based on Visual Embedded Rust...
+
+https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming
+
 ## Demo for Lisp Code Generator
 
 Try it here...
