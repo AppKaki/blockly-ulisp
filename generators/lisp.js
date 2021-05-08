@@ -134,7 +134,7 @@ Blockly.Lisp.finish = function(code) {
   if (code) {
     code = Blockly.Lisp.prefixLines(code, Blockly.Lisp.INDENT);
   }
-  code = 'main() {\n' + code + '}';
+  ////code = 'main() {\n' + code + '}';
 
   // Convert the definitions dictionary into a list.
   var imports = [];

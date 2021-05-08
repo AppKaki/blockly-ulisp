@@ -111,9 +111,8 @@ Blockly.Lisp['digital_write_pin'] = function(block) {
   var dropdown_value = block.getFieldValue('VALUE');
   //  TODO: Call init_out only once,
   var code = [
-    '//  Configure the GPIO pin for output and set the value.',
-    'gpio::init_out(' + dropdown_pin + ', ' + dropdown_value + ') ? ;',
-    'gpio::write(' + dropdown_pin + ',' + dropdown_value + ') ? ;',
+    '( pinmode      ' + dropdown_pin + ' :output )',
+    '( digitalwrite ' + dropdown_pin + ' ' + dropdown_value + ' )',
     ''
   ].join('\n');  
   return code;

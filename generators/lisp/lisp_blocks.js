@@ -138,11 +138,11 @@ var lisp_blocks =
       "options": [
         [
           "LOW",
-          "0"
+          ":low"
         ],
         [
           "HIGH",
-          "1"
+          ":high"
         ]
       ]
     }
