@@ -580,6 +580,7 @@ Code.runJS = function() {
 
   //  If this line doesn't start with "(", merge with previous line
 
+  runWebSerial();
   ////
 
   /* TODO: Run the code in Web Serial API
@@ -599,6 +600,57 @@ Code.runJS = function() {
   }
   */
 };
+
+//  Web Serial Port
+var port;
+
+//  Run a command on BL602 via Web Serial API
+//  Based on https://web.dev/serial/
+async function runWebSerial() {
+  //  Check if Web Serial API is supported
+  if (!("serial" in navigator)) { alert("Web Serial API is not supported"); return; }
+
+  //  Prompt user to select any serial port
+  if (!port) { port = await navigator.serial.requestPort(); }
+  if (!port) { return; }
+
+  //  Wait for the serial port to open at 2 Mbps
+  await port.open({ baudRate: 2000000 });
+
+  {
+    //  Send "reboot" command to BL602
+    console.log("Writing to BL602...");
+    const textEncoder = new TextEncoderStream();
+    const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
+    const writer = textEncoder.writable.getWriter();
+    await writer.write("reboot\r");  
+  }
+
+  {
+    //  Read response from BL602
+    console.log("Reading from BL602...");
+    const textDecoder = new TextDecoderStream();
+    const readableStreamClosed = port.readable.pipeTo(textDecoder.writable);
+    const reader = textDecoder.readable.getReader();
+    
+    // Listen to data coming from the serial device.
+    while (true) {
+      const { value, done } = await reader.read();
+      if (done) {
+        // Allow the serial port to be closed later.
+        reader.releaseLock();
+        break;
+      }
+      //  value is a string
+      console.log(value);
+
+      //  TODO: break from the loop once we have read enough
+    }  
+  }
+
+  //  Close the port
+  await port.close();
+}
 
 /**
  * Discard all blocks from the workspace.
