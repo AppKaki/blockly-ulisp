@@ -22,7 +22,7 @@ The following have been added into the existing [`generators`](generators) folde
 
 The Lisp Code Generator is __incomplete__. The only blocks supported are...
 
-1.  Loop
+1.  Forever
 
 1.  Wait
 
