@@ -1,5 +1,7 @@
 # Blockly for uLisp on RISC-V BL602
 
+Browser-based graphical development tool that generates uLisp code for BL602 RISC-V Board.
+
 Try it here...
 
 https://appkaki.github.io/blockly-ulisp/demos/code/
@@ -19,6 +21,10 @@ The following have been added into the existing [`generators`](generators) folde
 [`generators/lisp/lisp_library.xml`](generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
 
 ## Demo for Lisp Code Generator
+
+Try it here...
+
+https://appkaki.github.io/blockly-ulisp/demos/code/
 
 The Blockly demo at [`demos/code`](demos/code) has been customised to include the Lisp Code Generator...
 
