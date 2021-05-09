@@ -1,12 +1,12 @@
 # Blockly for uLisp on RISC-V BL602
 
-Browser-based graphical development tool that generates uLisp code for BL602 RISC-V Board.
+Browser-based graphical development tool that runs uLisp code on BL602 RISC-V Board.
 
 Try it here...
 
 https://appkaki.github.io/blockly-ulisp/demos/code/
 
-More about uLisp for BL602...
+uLisp Firmware needs to be installed on the BL602 Board...
 
 https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
 
@@ -23,6 +23,8 @@ The following have been added into the existing [`generators`](generators) folde
 The Lisp Code Generator is __incomplete__. The only blocks supported are...
 
 1.  Forever
+
+1.  On Start
 
 1.  Wait
 
@@ -43,6 +45,10 @@ The Blockly demo at [`demos/code`](demos/code) has been customised to include th
 -   [`demos/code/index.html`](demos/code/index.html): Customised to load the Lisp Code Generator and Lisp Blocks
 
 -   [`demos/code/code.js`](demos/code/code.js): Customised to load the Lisp Code Generator and Lisp Blocks
+
+Inspired by MakeCode for BBC micro:bit...
+
+https://makecode.microbit.org/
 
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 
