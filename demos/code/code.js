@@ -641,11 +641,11 @@ window.addEventListener('load', Code.init);
 ///////////////////////////////////////////////////////////////////////////////
 //  Web Serial Interface
 
-//  List a list of commands on BL602 via Web Serial API
+//  Run a list of commands on BL602 via Web Serial API
 async function runCommands(commands) {
   console.log(commands);
 
-  //  For each merged code line...
+  //  For each merged command...
 
   //  Send an empty command and check that BL602 responds with "#"
   /*
@@ -662,7 +662,7 @@ async function runCommands(commands) {
 
   //  TODO: Handle no response or invalid response from BL602
 
-  //  Send the merged code line to BL602, don't wait for response
+  //  Send the merged command to BL602, don't wait for response
 
   //  TODO: Show the BL602 response
 }
