@@ -601,6 +601,30 @@ Code.runJS = function() {
   */
 };
 
+/**
+ * Discard all blocks from the workspace.
+ */
+Code.discard = function() {
+  var count = Code.workspace.getAllBlocks(false).length;
+  if (count < 2 ||
+      window.confirm(Blockly.Msg['DELETE_ALL_BLOCKS'].replace('%1', count))) {
+    Code.workspace.clear();
+    if (window.location.hash) {
+      window.location.hash = '';
+    }
+  }
+};
+
+// Load the Code demo's language strings.
+document.write('<script src="msg/' + Code.LANG + '.js"></script>\n');
+// Load Blockly's language strings.
+document.write('<script src="../../msg/js/' + Code.LANG + '.js"></script>\n');
+
+window.addEventListener('load', Code.init);
+
+///////////////////////////////////////////////////////////////////////////////
+//  Web Serial Interface
+
 //  Web Serial Port
 var serialPort;
 
@@ -671,24 +695,3 @@ async function runWebSerial() {
   await serialPort.close();
   console.log("runWebSerial: OK");
 }
-
-/**
- * Discard all blocks from the workspace.
- */
-Code.discard = function() {
-  var count = Code.workspace.getAllBlocks(false).length;
-  if (count < 2 ||
-      window.confirm(Blockly.Msg['DELETE_ALL_BLOCKS'].replace('%1', count))) {
-    Code.workspace.clear();
-    if (window.location.hash) {
-      window.location.hash = '';
-    }
-  }
-};
-
-// Load the Code demo's language strings.
-document.write('<script src="msg/' + Code.LANG + '.js"></script>\n');
-// Load Blockly's language strings.
-document.write('<script src="../../msg/js/' + Code.LANG + '.js"></script>\n');
-
-window.addEventListener('load', Code.init);
