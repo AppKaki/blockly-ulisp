@@ -1,6 +1,6 @@
 # Blockly for uLisp on RISC-V BL602
 
-Browser-based graphical development tool that runs uLisp code on BL602 RISC-V Board.
+Browser-based graphical development tool that runs uLisp scripts on BL602 RISC-V Board.
 
 Try it here...
 
@@ -45,6 +45,14 @@ The Blockly demo at [`demos/code`](demos/code) has been customised to include th
 -   [`demos/code/index.html`](demos/code/index.html): Customised to load the Lisp Code Generator and Lisp Blocks
 
 -   [`demos/code/code.js`](demos/code/code.js): Customised to load the Lisp Code Generator and Lisp Blocks
+
+The Blockly demo calls the [__Web Serial API__](https://web.dev/serial/) to transfer the generated uLisp Script to BL602...
+
+https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L738
+
+We assume that BL602 is running the uLisp Firmware and connected to our computer via USB...
+
+https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
 
 Inspired by MakeCode for BBC micro:bit...
 
