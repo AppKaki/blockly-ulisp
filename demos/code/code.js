@@ -580,31 +580,14 @@ Code.runJS = function() {
   console.log(code);
 
   //  Transform the code lines so that all lines start with "("
+  var commands = [];
 
   //  Skip blank lines
 
   //  If this line doesn't start with "(", merge with previous line
 
-  //  For each merged code line...
-
-  //  Send an empty command and check that BL602 responds with "#"
-  /*
-  runWebSerialCommand(
-    "",   //  Command
-    "#"   //  Expected Response
-  );
-  */
-
-  runWebSerialCommand(
-    "reboot",   //  Command
-    "Init CLI"  //  Expected Response
-  );
-
-  //  TODO: Handle no response or invalid response from BL602
-
-  //  Send the merged code line to BL602, don't wait for response
-
-  //  TODO: Show the BL602 response
+  //  Run the code lines
+  runCommands(commands);
 
   /* Previously: Execute the user's code. Just a quick and dirty eval.  Catch infinite loops.
 
@@ -647,6 +630,30 @@ window.addEventListener('load', Code.init);
 
 ///////////////////////////////////////////////////////////////////////////////
 //  Web Serial Interface
+
+//  List a list of commands on BL602 via Web Serial API
+async function runCommands(commands) {
+  //  For each merged code line...
+
+  //  Send an empty command and check that BL602 responds with "#"
+  /*
+  await runWebSerialCommand(
+    "",   //  Command
+    "#"   //  Expected Response
+  );
+  */
+
+  await runWebSerialCommand(
+    "reboot",   //  Command
+    "Init CLI"  //  Expected Response
+  );
+
+  //  TODO: Handle no response or invalid response from BL602
+
+  //  Send the merged code line to BL602, don't wait for response
+
+  //  TODO: Show the BL602 response
+}
 
 //  Web Serial Port
 var serialPort;
