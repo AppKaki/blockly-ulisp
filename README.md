@@ -6,7 +6,7 @@ Watch the demo on YouTube...
 
 - [__LED Demo__](https://youtu.be/RRhzW4j8BtI)
 
-- [__Blinky Demo__]https://youtu.be/LNkmUIv7ZZc
+- [__Blinky Demo__](https://youtu.be/LNkmUIv7ZZc)
 
 Try it here...
 
@@ -46,7 +46,7 @@ Watch the demo on YouTube...
 
 - [__LED Demo__](https://youtu.be/RRhzW4j8BtI)
 
-- [__Blinky Demo__]https://youtu.be/LNkmUIv7ZZc
+- [__Blinky Demo__](https://youtu.be/LNkmUIv7ZZc)
 
 Try it here...
 
