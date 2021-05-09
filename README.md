@@ -2,6 +2,10 @@
 
 Browser-based graphical development tool that runs uLisp scripts on BL602 RISC-V Board.
 
+Watch the demo on YouTube...
+
+https://youtu.be/RRhzW4j8BtI
+
 Try it here...
 
 https://appkaki.github.io/blockly-ulisp/demos/code/
@@ -35,6 +39,10 @@ The Lisp Code Generator is based on Visual Embedded Rust...
 https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming
 
 ## Demo for Lisp Code Generator
+
+Watch the demo on YouTube...
+
+https://youtu.be/RRhzW4j8BtI
 
 Try it here...
 
