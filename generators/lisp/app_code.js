@@ -1,37 +1,12 @@
 /// Code Generator Functions for App Blocks
 
 Blockly.Lisp['on_start'] = function(block) {
+  //  Run this code at startup. Inspired by MakeCode "on_start" and Arduino "setup".
   var statements_stmts = Blockly.Lisp.statementToCode(block, 'STMTS');
   var code = statements_stmts;
-  if (code) {
-    //  code = Blockly.Lisp.prefixLines(code, Blockly.Lisp.INDENT);
-  }
-  //  TODO: Allow multiple `on_start` blocks.
   code = [
-    '/// Will be run upon startup to launch the app',
-    '#[infer_type]  //  Infer the missing types',
-    'pub fn on_start() -> MynewtResult<()> {',
-    Blockly.Lisp.prefixLines([
-      'console::print("on_start\\n");',
-      '//  Build a new window',
-      'let main_window = WindowDesc::new(ui_builder);',
-      '//  Create application state',
-      'let state = State::default();',
-    ].join('\n'), 
-    Blockly.Lisp.INDENT),
-    code,
-    Blockly.Lisp.prefixLines([
-      '//  Launch the window with the application state',
-      'AppLauncher::with_window(main_window)',
-      Blockly.Lisp.INDENT + '.use_simple_logger()',
-      Blockly.Lisp.INDENT + '.launch(state)',
-      Blockly.Lisp.INDENT + '.expect("launch failed");',
-      '//  Return success to `main()` function',
-      'Ok(())',
-    ].join('\n'), 
-    Blockly.Lisp.INDENT),
-    '}',
-    ''
+    '( list  ',
+    code + ')',
   ].join('\n');
   return code;
 };

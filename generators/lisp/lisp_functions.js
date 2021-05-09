@@ -38,13 +38,9 @@ Blockly.Lisp['field'] = function(block) {
 };
 
 Blockly.Lisp['forever'] = function(block) {
+  //  Run this code at forever in a loop. Inspired by MakeCode "forever" and Arduino "loop".
   var statements_stmts = Blockly.Lisp.statementToCode(block, 'STMTS');
-  // Indent every line
   var code = statements_stmts;
-  if (code) {
-    code = Blockly.Lisp.prefixLines(code, Blockly.Lisp.INDENT);
-  }
-  //  TODO: Allow multiple Background Tasks for multiple `forever` blocks.
   code = [
     '( loop  ',
     code + ')',
