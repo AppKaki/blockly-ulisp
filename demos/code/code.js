@@ -578,12 +578,26 @@ Code.runJS = function() {
   var code = Blockly.Lisp.workspaceToCode(Code.workspace);
   console.log(code);
 
+  //  Transform the code lines so that all lines start with "("
+
   //  If this line doesn't start with "(", merge with previous line
 
-  runWebSerial();
-  ////
+  //  Send an empty command and check that BL602 responds with "#"
+  /*
+  runWebSerialCommand(
+    "",   //  Command
+    "#"   //  Expected Response
+  );
+  */
 
-  /* TODO: Run the code in Web Serial API
+  runWebSerialCommand(
+    "reboot",   //  Command
+    "Init CLI"  //  Expected Response
+  );
+
+  //  TODO: Handle no response or invalid response from BL602
+
+  /* Previously:
   Blockly.JavaScript.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
   var timeouts = 0;
   var checkTimeout = function() {
@@ -597,8 +611,7 @@ Code.runJS = function() {
     eval(code);
   } catch (e) {
     alert(MSG['badCode'].replace('%1', e));
-  }
-  */
+  } */
 };
 
 /**
@@ -630,7 +643,7 @@ var serialPort;
 
 //  Run a command on BL602 via Web Serial API
 //  Based on https://web.dev/serial/
-async function runWebSerial() {
+async function runWebSerialCommand(command, expectedResponse) {
   //  Check if Web Serial API is supported
   if (!("serial" in navigator)) { alert("Web Serial API is not supported"); return; }
 
@@ -645,13 +658,10 @@ async function runWebSerial() {
   var writableStreamClosed = null;
   var readableStreamClosed = null;
 
-  //  Command to be sent to BL602
-  const command = "reboot";
-
   //  Send command to BL602
   {
     //  Open a write stream
-    console.log("Writing to BL602...");
+    console.log("Writing to BL602: " + command + "...");
     const textEncoder = new TextEncoderStream();
     writableStreamClosed = textEncoder.readable.pipeTo(serialPort.writable);
     const writer = textEncoder.writable.getWriter();
@@ -676,11 +686,8 @@ async function runWebSerial() {
       const { value, done } = await reader.read();
       if (!done) { console.log(value); }
 
-      //  If the stream has ended, or the data contains "#" or "Init CLI", we stop
-      if (done 
-        || value.indexOf("#") >= 0         //  When we have entered a command
-        || value.indexOf("Init CLI") >= 0  //  When we have rebooted
-      ) { break; }
+      //  If the stream has ended, or the data contains expected response, we stop
+      if (done || value.indexOf(expectedResponse) >= 0) { break; }
     }
 
     //  Close the read stream
