@@ -579,14 +579,24 @@ Code.runJS = function() {
   var code = Blockly.Lisp.workspaceToCode(Code.workspace);
   console.log(code);
 
-  //  Transform the code lines so that all lines start with "("
+  //  Merge the code lines into commands so that all commands start with "("
   var commands = [];
+  const lines = code.split("\n");
+  lines.forEach(line => {
+    //  Skip blank lines
+    if (line.trim() == "") { return; }
+    
+    if (line[0] == "(") {
+      //  If this line starts with "(", add it as a command
+      commands.push(line);
+    } else {
+      //  If this line doesn't start with "(", merge with previous line
+      const lastIndex = commands.length - 1;
+      commands[lastIndex] += " " + line;
+    }
+  });
 
-  //  Skip blank lines
-
-  //  If this line doesn't start with "(", merge with previous line
-
-  //  Run the code lines
+  //  Run the merged commands
   runCommands(commands);
 
   /* Previously: Execute the user's code. Just a quick and dirty eval.  Catch infinite loops.
@@ -633,6 +643,8 @@ window.addEventListener('load', Code.init);
 
 //  List a list of commands on BL602 via Web Serial API
 async function runCommands(commands) {
+  console.log(commands);
+
   //  For each merged code line...
 
   //  Send an empty command and check that BL602 responds with "#"
