@@ -646,31 +646,36 @@ async function runCommands(commands) {
   console.log(commands);
 
   //  For each merged command...
+  for (const command of commands) {
+    //  Send an empty command and check that BL602 responds with "#"
+    await runWebSerialCommand(
+      "",  //  Command
+      "#"  //  Expected Response
+    );
 
-  //  Send an empty command and check that BL602 responds with "#"
-  /*
-  await runWebSerialCommand(
-    "",   //  Command
-    "#"   //  Expected Response
-  );
-  */
+    //  Send the actual command but don't wait for response
+    await runWebSerialCommand(
+      command,  //  Command
+      null      //  Don't wait for response
+    );
 
-  await runWebSerialCommand(
-    "reboot",   //  Command
-    "Init CLI"  //  Expected Response
-  );
+    //  Test the reboot command
+    /*
+    await runWebSerialCommand(
+      "reboot",   //  Command
+      "Init CLI"  //  Expected Response
+    );
+    */
 
-  //  TODO: Handle no response or invalid response from BL602
-
-  //  Send the merged command to BL602, don't wait for response
-
-  //  TODO: Show the BL602 response
+    //  TODO: Handle no response or invalid response from BL602
+    //  TODO: Show the BL602 response
+  }
 }
 
 //  Web Serial Port
 var serialPort;
 
-//  Run a command on BL602 via Web Serial API
+//  Run a command on BL602 via Web Serial API and wait for the expectedResponse (if not null)
 //  Based on https://web.dev/serial/
 async function runWebSerialCommand(command, expectedResponse) {
   //  Check if Web Serial API is supported
@@ -688,7 +693,7 @@ async function runWebSerialCommand(command, expectedResponse) {
   var readableStreamClosed = null;
 
   //  Send command to BL602
-  if (command) {
+  {
     //  Open a write stream
     console.log("Writing to BL602: " + command + "...");
     const textEncoder = new TextEncoderStream();
