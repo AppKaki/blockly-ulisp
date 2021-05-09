@@ -617,13 +617,19 @@ async function runWebSerial() {
   //  Wait for the serial port to open at 2 Mbps
   await port.open({ baudRate: 2000000 });
 
+  //  Command to be sent to BL602
+  const command = "reboot";
+  
   {
-    //  Send "reboot" command to BL602
+    //  Send command to BL602
     console.log("Writing to BL602...");
     const textEncoder = new TextEncoderStream();
     const writableStreamClosed = textEncoder.readable.pipeTo(port.writable);
     const writer = textEncoder.writable.getWriter();
-    await writer.write("reboot\r");  
+    await writer.write(command + "\r"); 
+
+    //  Allow the serial port to be closed later
+    writer.releaseLock();
   }
 
   {
@@ -636,20 +642,24 @@ async function runWebSerial() {
     // Listen to data coming from the serial device.
     while (true) {
       const { value, done } = await reader.read();
-      if (done) {
-        // Allow the serial port to be closed later.
-        reader.releaseLock();
-        break;
-      }
-      //  value is a string
-      console.log(value);
+      if (!done) { console.log(value); }
 
-      //  TODO: break from the loop once we have read enough
-    }  
+      //  If the stream has ended, or the data contains "#" or "Init CLI", we stop
+      if (done 
+        || value.indexOf("#") >= 0
+        || value.indexOf("Init CLI") >= 0
+      ) { break; }
+    }
+
+    //  Allow the serial port to be closed later
+    reader.releaseLock();
   }
+  console.log(port);
 
   //  Close the port
+  //  TODO: Fix error "TypeError: Failed to execute 'close' on 'SerialPort': Cannot cancel a locked stream"
   await port.close();
+  console.log("runWebSerial: OK");
 }
 
 /**
