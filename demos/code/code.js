@@ -452,7 +452,8 @@ Code.init = function() {
 
   Code.loadBlocks('');
   
-  //// TODO: Load the Lisp Custom Blocks.
+  //// TODO: Added code here
+  //  Load the Lisp Custom Blocks.
   var blocks = lisp_blocks;  // lisp_blocks defined in lisp_blocks.js
   // For each Block...
   blocks.forEach(block => {
@@ -569,18 +570,22 @@ Code.initLanguage = function() {
   document.getElementById('trashButton').title = MSG['trashTooltip'];
 };
 
+//// TODO: Added code for Web Serial API
+
 /**
- * Execute the user's code.
- * Just a quick and dirty eval.  Catch infinite loops.
+ * Execute the Lisp code on BL602 with Web Serial API
  */
 Code.runJS = function() {
-  //// TODO: Run the Lisp code on BL602 with Web Serial API
   var code = Blockly.Lisp.workspaceToCode(Code.workspace);
   console.log(code);
 
   //  Transform the code lines so that all lines start with "("
 
+  //  Skip blank lines
+
   //  If this line doesn't start with "(", merge with previous line
+
+  //  For each merged code line...
 
   //  Send an empty command and check that BL602 responds with "#"
   /*
@@ -597,7 +602,12 @@ Code.runJS = function() {
 
   //  TODO: Handle no response or invalid response from BL602
 
-  /* Previously:
+  //  Send the merged code line to BL602, don't wait for response
+
+  //  TODO: Show the BL602 response
+
+  /* Previously: Execute the user's code. Just a quick and dirty eval.  Catch infinite loops.
+
   Blockly.JavaScript.INFINITE_LOOP_TRAP = 'checkTimeout();\n';
   var timeouts = 0;
   var checkTimeout = function() {
@@ -659,7 +669,7 @@ async function runWebSerialCommand(command, expectedResponse) {
   var readableStreamClosed = null;
 
   //  Send command to BL602
-  {
+  if (command) {
     //  Open a write stream
     console.log("Writing to BL602: " + command + "...");
     const textEncoder = new TextEncoderStream();
@@ -674,7 +684,7 @@ async function runWebSerialCommand(command, expectedResponse) {
   }
 
   //  Read response from BL602
-  {
+  if (expectedResponse) {
     //  Open a read stream
     console.log("Reading from BL602...");
     const textDecoder = new TextDecoderStream();
