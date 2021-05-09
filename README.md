@@ -4,7 +4,9 @@ Browser-based graphical development tool that runs uLisp scripts on BL602 RISC-V
 
 Watch the demo on YouTube...
 
-https://youtu.be/RRhzW4j8BtI
+- [__LED Demo__](https://youtu.be/RRhzW4j8BtI)
+
+- [__Blinky Demo__]https://youtu.be/LNkmUIv7ZZc
 
 Try it here...
 
@@ -42,7 +44,9 @@ https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-prog
 
 Watch the demo on YouTube...
 
-https://youtu.be/RRhzW4j8BtI
+- [__LED Demo__](https://youtu.be/RRhzW4j8BtI)
+
+- [__Blinky Demo__]https://youtu.be/LNkmUIv7ZZc
 
 Try it here...
 
