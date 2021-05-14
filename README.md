@@ -2,6 +2,10 @@
 
 Browser-based graphical development tool that runs uLisp scripts on BL602 RISC-V Board.
 
+Read the article...
+
+- [__uLisp and Blockly on PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/lisp)
+
 Watch the demo on YouTube...
 
 - [__LED Demo__](https://youtu.be/RRhzW4j8BtI)
