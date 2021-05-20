@@ -111,6 +111,7 @@
     <tr>
       <td colspan=2 align="center">
         <canvas id="canvas" width="400" height="300"></canvas>
+        <textarea id="output" style="width: 300px; height: 300px;"></textarea>
         <div class="spinner" id='spinner'></div>
         <div class="emscripten" id="status"></div>    
         <progress value="0" max="100" id="progress" hidden=1></progress>
@@ -594,11 +595,11 @@
       ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
     }
 
-    /// Run the script in the input box
-    function runScript() {
+    /// Run the provided script
+    function runScript(scr) { //// TODO
       //  Get the uLisp script 
       //  var scr = "( list 1 2 3 )";
-      const scr = document.getElementById("input").value;
+      //// TODO: const scr = document.getElementById("input").value;
 
       //  Allocate WebAssembly memory for the script
       const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);

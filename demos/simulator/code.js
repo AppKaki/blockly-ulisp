@@ -579,6 +579,9 @@ Code.runJS = function() {
   var code = Blockly.Lisp.workspaceToCode(Code.workspace);
   console.log(code);
 
+  runScript(code); //// TODO: Defined in index.html
+
+  /* //// TODO
   //  Merge the code lines into commands so that all commands start with "("
   var commands = [];
   const lines = code.split("\n");
@@ -598,6 +601,7 @@ Code.runJS = function() {
 
   //  Run the merged commands
   runCommands(commands);
+  */
 
   /* Previously: Execute the user's code. Just a quick and dirty eval.  Catch infinite loops.
 
