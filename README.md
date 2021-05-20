@@ -20,6 +20,10 @@ uLisp Firmware needs to be installed on the BL602 Board...
 
 https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
 
+Or try it with the BL602 Simulator in WebAssembly...
+
+https://appkaki.github.io/blockly-ulisp/demos/simulator/
+
 ## Lisp Code Generator
 
 The following have been added into the existing [`generators`](generators) folder to generate Lisp code and to add blocks specific to uLisp...
