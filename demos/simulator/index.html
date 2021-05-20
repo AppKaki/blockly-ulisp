@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="google" value="notranslate">
+  <title>uLisp Blockly</title>
+
+  <!--  Load Blockly Stylesheet and our override  -->
+  <link rel="stylesheet" href="style.css">
+  <script src="/storage.js"></script>
+
+  <!--  Load Blockly and Google Closure  -->
+  <script src="../../blockly_uncompressed.js"></script>
+
+  <!--  Load Blocks  -->
+  <script src="../../blocks_compressed.js"></script>
+
+  <!--  Load Code Generators  -->
+  <script src="../../javascript_compressed.js"></script>
+  <script src="../../python_compressed.js"></script>
+  <script src="../../php_compressed.js"></script>
+  <script src="../../lua_compressed.js"></script>
+  <script src="../../dart_compressed.js"></script>
+
+  <!--  Load Lisp Code Generator  -->
+  <script src="../../generators/lisp.js"></script>
+
+  <!--  Load Lisp Blocks and Lisp Block Code Generators  -->
+  <script src="../../generators/lisp/lisp_blocks.js"></script>
+  <script src="../../generators/lisp/lisp_functions.js"></script>
+  <script src="../../generators/lisp/lisp_coap.js"></script>
+  <script src="../../generators/lisp/app_blocks.js"></script>
+  <script src="../../generators/lisp/app_code.js"></script>
+  <script src="../../generators/lisp/widgets_code.js"></script>
+  <script src="../../generators/lisp/widgets_blocks.js"></script>
+  <script src="../../generators/lisp/widgets_category.js"></script>
+
+  <!--  Load Lisp Functions. TODO: Package into lisp_compressed.js  -->
+  <script src="../../generators/lisp/colour.js"></script>
+  <script src="../../generators/lisp/lists.js"></script>
+  <script src="../../generators/lisp/logic.js"></script>
+  <script src="../../generators/lisp/loops.js"></script>
+  <script src="../../generators/lisp/math.js"></script>
+  <script src="../../generators/lisp/procedures.js"></script>
+  <script src="../../generators/lisp/text.js"></script>
+  <script src="../../generators/lisp/variables.js"></script>  
+  <script src="../../generators/lisp/variables_dynamic.js"></script>
+  <!--  TODO: End  -->
+
+  <script src="code.js"></script>
+</head>
+<body>
+  <table width="100%" height="100%">
+    <tr>
+      <td>
+        <h1><a href="https://developers.google.com/blockly/">Blockly</a>&rlm; &gt;
+          <a href="../index.html">Demos</a>&rlm; &gt;
+          <span id="title">...</span>
+        </h1>
+      </td>
+      <td class="farSide">
+        <select id="languageMenu"></select>
+        <a class="privacyLink" href="https://policies.google.com/privacy">Privacy</a>
+      </td>
+    </tr>
+    <tr>
+      <td colspan=2>
+        <table width="100%">
+          <tr id="tabRow" height="1em">
+            <td id="tab_blocks" class="tabon">...</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_lisp" class="taboff tab_collapse">Lisp</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_javascript" class="taboff tab_collapse">JavaScript</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_python" class="taboff tab_collapse">Python</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_php" class="taboff tab_collapse">PHP</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_lua" class="taboff tab_collapse">Lua</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_dart" class="taboff tab_collapse">Dart</td>
+            <td class="tabmin tab_collapse">&nbsp;</td>
+            <td id="tab_xml" class="taboff tab_collapse">XML</td>
+            <td class="tabmin">&nbsp;</td>
+            <td id="tab_code" class="taboff">
+              <select id="code_menu"></select>
+            </td>
+            <td class="tabmax">
+              <button id="trashButton" class="notext" title="...">
+                <img src='../../media/1x1.gif' class="trash icon21">
+              </button>
+              <button id="linkButton" class="notext" title="...">
+                <img src='../../media/1x1.gif' class="link icon21">
+              </button>
+              <button id="runButton" class="notext primary" title="...">
+                <img src='../../media/1x1.gif' class="run icon21">
+              </button>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+    <tr>
+      <td height="99%" colspan=2 id="content_area">
+      </td>
+    </tr>
+
+    <!-- Canvas for Simulator -->
+    <tr>
+      <td colspan=2 align="center">
+        <canvas id="canvas" width="400" height="300"></canvas>
+        <textarea id="output" style="width: 300px; height: 300px;"></textarea>
+        <div class="spinner" id='spinner'></div>
+        <div class="emscripten" id="status"></div>    
+        <progress value="0" max="100" id="progress" hidden=1></progress>
+      </td>
+    </tr>
+    <!-- End -->
+
+  </table>
+  <div id="content_blocks" class="content"></div>
+  <pre id="content_lisp" class="content prettyprint lang-lisp"></pre>
+  <pre id="content_javascript" class="content prettyprint lang-js"></pre>
+  <pre id="content_python" class="content prettyprint lang-py"></pre>
+  <pre id="content_php" class="content prettyprint lang-php"></pre>
+  <pre id="content_lua" class="content prettyprint lang-lua"></pre>
+  <pre id="content_dart" class="content prettyprint lang-dart"></pre>
+  <textarea id="content_xml" class="content" wrap="off"></textarea>
+
+  <xml xmlns="https://developers.google.com/blockly/xml" id="toolbox" style="display: none">
+    <!--  Begin: Pins Category -->
+    <category name="GPIO" colour="330">
+      <block type="digital_read_pin"></block>
+      <block type="digital_write_pin"></block>
+      <block type="digital_toggle_pin"></block>
+  </category>
+  <!--  End  -->
+  
+  <!--  Begin: Widgets Category -->
+    <category name="I2C" colour="220">
+      <block type="app"></block>
+      <block type="label"></block>
+      <block type="button"></block>
+    </category>
+    <!--  End  -->
+
+    <!--  Begin: CoAP Category -->
+    <category name="SPI" colour="160">
+      <block type="coap"></block>
+      <block type="field"></block>
+    </category>
+    <!--  End: CoAP Category -->
+    
+    <!--  Begin: Events Category -->
+    <category name="WiFi" colour="%{BKY_PROCEDURES_HUE}" custom="WIDGET"></category>
+    <!--  End  -->
+
+    <sep></sep>
+
+    <category name="%{BKY_CATLOOPS}" colour="%{BKY_LOOPS_HUE}">
+
+      <!--  Begin: Forever and On Start -->      
+      <block type="on_start"></block>
+      <block type="forever"></block>
+      <block type="wait"></block>
+      <!--  End -->
+
+      <block type="controls_repeat_ext">
+        <value name="TIMES">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_whileUntil"></block>
+      <block type="controls_for">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+        <value name="BY">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="controls_forEach"></block>
+      <block type="controls_flow_statements"></block>
+    </category>
+
+    <category name="%{BKY_CATLOGIC}" colour="%{BKY_LOGIC_HUE}">      
+      <block type="controls_if"></block>
+      <block type="logic_compare"></block>
+      <block type="logic_operation"></block>
+      <block type="logic_negate"></block>
+      <block type="logic_boolean"></block>
+      <block type="logic_null"></block>
+      <block type="logic_ternary"></block>
+    </category>
+    
+    <category name="%{BKY_CATMATH}" colour="%{BKY_MATH_HUE}">
+      <block type="math_number">
+        <field name="NUM">123</field>
+      </block>
+      <block type="math_arithmetic">
+        <value name="A">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="B">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_single">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">9</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_trig">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">45</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constant"></block>
+      <block type="math_number_property">
+        <value name="NUMBER_TO_CHECK">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_round">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">3.1</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_on_list"></block>
+      <block type="math_modulo">
+        <value name="DIVIDEND">
+          <shadow type="math_number">
+            <field name="NUM">64</field>
+          </shadow>
+        </value>
+        <value name="DIVISOR">
+          <shadow type="math_number">
+            <field name="NUM">10</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_constrain">
+        <value name="VALUE">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="LOW">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="HIGH">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_int">
+        <value name="FROM">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="TO">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="math_random_float"></block>
+      <block type="math_atan2">
+        <value name="X">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+        <value name="Y">
+          <shadow type="math_number">
+            <field name="NUM">1</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="%{BKY_CATTEXT}" colour="%{BKY_TEXTS_HUE}">
+      <block type="text"></block>
+      <block type="text_join"></block>
+      <block type="text_append">
+        <value name="TEXT">
+          <shadow type="text"></shadow>
+        </value>
+      </block>
+      <block type="text_length">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_isEmpty">
+        <value name="VALUE">
+          <shadow type="text">
+            <field name="TEXT"></field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+        <value name="FIND">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_charAt">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_getSubstring">
+        <value name="STRING">
+          <block type="variables_get">
+            <field name="VAR">{textVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="text_changeCase">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_trim">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_print">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="text_prompt_ext">
+        <value name="TEXT">
+          <shadow type="text">
+            <field name="TEXT">abc</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+    <category name="%{BKY_CATLISTS}" colour="%{BKY_LISTS_HUE}">
+      <block type="lists_create_with">
+        <mutation items="0"></mutation>
+      </block>
+      <block type="lists_create_with"></block>
+      <block type="lists_repeat">
+        <value name="NUM">
+          <shadow type="math_number">
+            <field name="NUM">5</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_length"></block>
+      <block type="lists_isEmpty"></block>
+      <block type="lists_indexOf">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getIndex">
+        <value name="VALUE">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_setIndex">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_getSublist">
+        <value name="LIST">
+          <block type="variables_get">
+            <field name="VAR">{listVariable}</field>
+          </block>
+        </value>
+      </block>
+      <block type="lists_split">
+        <value name="DELIM">
+          <shadow type="text">
+            <field name="TEXT">,</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="lists_sort"></block>
+    </category>
+    <category name="%{BKY_CATCOLOUR}" colour="%{BKY_COLOUR_HUE}">
+      <block type="colour_picker"></block>
+      <block type="colour_random"></block>
+      <block type="colour_rgb">
+        <value name="RED">
+          <shadow type="math_number">
+            <field name="NUM">100</field>
+          </shadow>
+        </value>
+        <value name="GREEN">
+          <shadow type="math_number">
+            <field name="NUM">50</field>
+          </shadow>
+        </value>
+        <value name="BLUE">
+          <shadow type="math_number">
+            <field name="NUM">0</field>
+          </shadow>
+        </value>
+      </block>
+      <block type="colour_blend">
+        <value name="COLOUR1">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#ff0000</field>
+          </shadow>
+        </value>
+        <value name="COLOUR2">
+          <shadow type="colour_picker">
+            <field name="COLOUR">#3333ff</field>
+          </shadow>
+        </value>
+        <value name="RATIO">
+          <shadow type="math_number">
+            <field name="NUM">0.5</field>
+          </shadow>
+        </value>
+      </block>
+    </category>
+
+    <sep></sep>
+    <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
+    <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
+  </xml>
+
+  <!--  Emscripten Script: From ulisp.html  -->
+
+  <script type='text/javascript'>
+    var statusElement = document.getElementById('status');
+    var progressElement = document.getElementById('progress');
+    var spinnerElement = document.getElementById('spinner');
+
+    var Module = {
+      preRun: [],
+      postRun: [],
+      print: (function() {
+        var element = document.getElementById('output');
+        if (element) element.value = ''; // clear browser cache
+        return function(text) {
+          if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+          // These replacements are necessary if you render to raw HTML
+          //text = text.replace(/&/g, "&amp;");
+          //text = text.replace(/</g, "&lt;");
+          //text = text.replace(/>/g, "&gt;");
+          //text = text.replace('\n', '<br>', 'g');
+          console.log(text);
+          if (element) {
+            element.value += text + "\n";
+            element.scrollTop = element.scrollHeight; // focus on bottom
+          }
+        };
+      })(),
+      printErr: function(text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+        console.error(text);
+      },
+      canvas: (function() {
+        var canvas = document.getElementById('canvas');
+
+        // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+        // application robust, you may want to override this behavior before shipping!
+        // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+        canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+        return canvas;
+      })(),
+      setStatus: function(text) {
+        if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+        if (text === Module.setStatus.last.text) return;
+        var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+        var now = Date.now();
+        if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
+        Module.setStatus.last.time = now;
+        Module.setStatus.last.text = text;
+        if (m) {
+          text = m[1];
+          progressElement.value = parseInt(m[2])*100;
+          progressElement.max = parseInt(m[4])*100;
+          progressElement.hidden = false;
+          spinnerElement.hidden = false;
+        } else {
+          progressElement.value = null;
+          progressElement.max = null;
+          progressElement.hidden = true;
+          if (!text) spinnerElement.style.display = 'none';
+        }
+        statusElement.innerHTML = text;
+      },
+      totalDependencies: 0,
+      monitorRunDependencies: function(left) {
+        this.totalDependencies = Math.max(this.totalDependencies, left);
+        Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+      }
+    };
+    Module.setStatus('Downloading...');
+    window.onerror = function(event) {
+      // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+      Module.setStatus('Exception thrown, see JavaScript console');
+      spinnerElement.style.display = 'none';
+      Module.setStatus = function(text) {
+        if (text) Module.printErr('[post-exception status] ' + text);
+      };
+    };
+  </script>
+
+  <!--  End of Emscripten Script  -->
+
+  <!--  Custom Script: TODO Sync with ulisp.html  -->
+  <script type="text/javascript">
+
+    /// JSON Stream of Simulation Events emitted by uLisp Interpreter. Looks like...
+    ///  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+    ///    { "time_delay": { "ticks": 1000 } }, ... ]
+    let simulation_events = [];
+
+    /// Wait for emscripten to be initialised
+    Module.onRuntimeInitialized = function() {
+      //  Init uLisp interpreter
+      Module.print("Init uLisp...\n");
+      Module._setup_ulisp();
+
+      // Load the simulator pic and render it
+      const image = new Image();
+      image.onload = renderSimulator;  //  Draw when image has loaded
+      image.src = 'pinecone.png';      //  Image to be loaded
+    };
+
+    /// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+    function renderSimulator() {
+      //  Get the HTML canvas and context
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+
+      //  Resize the canvas
+      canvas.width  = 400;
+      canvas.height = 300;
+
+      //  Draw the image to fill the canvas
+      ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+    }
+
+    /// Run the provided script
+    function runScript(scr) { //// TODO
+      //  Get the uLisp script 
+      //  var scr = "( list 1 2 3 )";
+      //// TODO: const scr = document.getElementById("input").value;
+
+      //  Allocate WebAssembly memory for the script
+      const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+
+      //  Catch any errors so that we can free the allocated memory
+      try {
+        //  Clear the JSON Stream of Simulation Events in WebAssembly
+        Module._clear_simulation_events();
+
+        //  Execute the uLisp script in WebAssembly
+        Module.print("\nExecute uLisp: " + scr + "\n");
+        Module._execute_ulisp(scr_ptr);
+
+        //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+        //  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+        //    { "time_delay": { "ticks": 1000 } }, ... ]
+        const json_ptr = Module._get_simulation_events();
+
+        //  Convert the JSON string from WebAssembly to JavaScript
+        const json = Module.UTF8ToString(json_ptr);
+
+        //  Parse the JSON Stream of Simulation Events
+        simulation_events = JSON.parse(json);
+        Module.print("Events: " + JSON.stringify(simulation_events, null, 2) + "\n");
+      } catch(err) {
+        //  Catch and show any errors
+        console.error(err);
+      } finally {
+        //  Free the WebAssembly memory allocated for the script
+        Module._free(scr_ptr);
+      }
+
+      //  Start a timer to simulate the returned events
+      if (simulation_events.length > 0) {
+        window.setTimeout("simulateEvents()", 1);
+      }
+
+      //  More about passing strings between JavaScript and C WebAssembly:
+      //  https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html
+      //  https://stackoverflow.com/questions/46815205/how-to-pass-a-string-to-c-code-compiled-with-emscripten-for-webassembly
+    }
+
+    /// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
+    ///  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+    ///    { "time_delay": { "ticks": 1000 } }, ... ]
+    function simulateEvents() {
+      //  Take the first event and update the queue
+      if (simulation_events.length == 0) { return; }
+      const event = simulation_events.shift();
+      //  event looks like:
+      //  { "gpio_output_set": { "pin": 11, "value": 1 } }
+
+      //  Get the event type and parameters
+      const event_type = Object.keys(event)[0];
+      const args = event[event_type];
+
+      //  Timeout in milliseconds to the next event
+      let timeout = 1;
+
+      //  Handle each event type
+      switch (event_type) {
+
+        //  Set GPIO output
+        //  { "gpio_output_set": { "pin": 11, "value": 1 } }
+        case "gpio_output_set": timeout += gpio_output_set(args.pin, args.value); break;
+
+        //  Delay
+        //  { "time_delay": { "ticks": 1000 } }
+        case "time_delay": timeout += time_delay(args.ticks); break;
+
+        //  Unknown event type
+        default: throw new Error("Unknown event type: " + event_type);
+      }
+
+      //  Simulate the next event
+      if (simulation_events.length > 0) {
+        window.setTimeout("simulateEvents()", timeout);
+      }
+    }
+
+    /// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
+    /// { "gpio_output_set": { "pin": 11, "value": 1 } }
+    function gpio_output_set(pin, value) {
+      //  Get the HTML Canvas Context
+      const ctx = document.getElementById('canvas').getContext('2d');
+
+      //  Set the simulated LED colour depending on value
+      switch (value) {
+        //  Set GPIO to Low (LED on)
+        case 0: ctx.fillStyle = '#B0B0FF'; break;  //  Blue
+
+        //  Set GPIO to High (LED off)
+        case 1: ctx.fillStyle = '#CCCCCC'; break;  //  Grey
+
+        //  Unknown value
+        default: throw new Error("Unknown gpio_output_set value: " + args.value);
+      }
+
+      //  Draw the LED colour
+      ctx.fillRect(315, 116, 35, 74);
+
+      //  Simulate next event in 0 milliseconds
+      return 0;
+    }
+
+    /// Simulate a delay for the specified number of ticks (1 tick = 1 millisecond)
+    /// { "time_delay": { "ticks": 1000 } }
+    function time_delay(ticks) {
+      //  Simulate the next event in "ticks" milliseconds
+      return ticks;
+    }
+
+  </script>    
+  <!--  End of Custom Script  -->
+
+  <!--  Load Emscripten WebAssembly: From ulisp.html  -->
+
+  <script async type="text/javascript" src="ulisp.js"></script>
+
+  <!--  End of Emscripten WebAssembly  -->
+
+</body>
+</html>

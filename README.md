@@ -1,4 +1,4 @@
-# Blockly for uLisp on RISC-V BL602
+# Blockly for uLisp on RISC-V BL602 (Support for BL602 Simulator in WebAssembly)
 
 Browser-based graphical development tool that runs uLisp scripts on BL602 RISC-V Board.
 
