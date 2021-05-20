@@ -12,6 +12,8 @@ Watch the demo on YouTube...
 
 - [__Blinky Demo__](https://youtu.be/LNkmUIv7ZZc)
 
+- [__BL602 Simulator Demo__](https://youtu.be/Ag2CERd1OzQ)
+
 Try it here...
 
 https://appkaki.github.io/blockly-ulisp/demos/code/
@@ -56,9 +58,15 @@ Watch the demo on YouTube...
 
 - [__Blinky Demo__](https://youtu.be/LNkmUIv7ZZc)
 
+- [__BL602 Simulator Demo__](https://youtu.be/Ag2CERd1OzQ)
+
 Try it here...
 
 https://appkaki.github.io/blockly-ulisp/demos/code/
+
+Or try it with the BL602 Simulator in WebAssembly...
+
+https://appkaki.github.io/blockly-ulisp/demos/simulator/
 
 The Blockly demo at [`demos/code`](demos/code) has been customised to include the Lisp Code Generator...
 
@@ -73,6 +81,16 @@ https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L73
 We assume that BL602 is running the uLisp Firmware and connected to our computer via USB...
 
 https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
+
+The BL602 Simulator HTML and JavaScript files are here...
+
+-   [`demos/simulator/index.html`](demos/simulator/index.html): Customised to load the Lisp Code Generator, Lisp Blocks and BL602 Simulator
+
+-   [`demos/simulator/code.js`](demos/simulator/code.js): Customised to load the Lisp Code Generator, Lisp Blocks and BL602 Simulator
+
+The BL602 Simulator includes uLisp compiled for WebAssembly...
+
+https://github.com/lupyuen/ulisp-bl602/tree/wasm
 
 Inspired by MakeCode for BBC micro:bit...
 
