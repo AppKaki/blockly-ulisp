@@ -1,6 +1,100 @@
-# Blockly for uLisp on RISC-V BL602
+# Blockly for uLisp on RISC-V BL602 (Support for BL602 Simulator in WebAssembly)
 
-See https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
+Browser-based graphical development tool that runs uLisp scripts on BL602 RISC-V Board.
+
+Read the article...
+
+- [__uLisp and Blockly on PineCone BL602 RISC-V Board__](https://lupyuen.github.io/articles/lisp)
+
+Watch the demo on YouTube...
+
+- [__LED Demo__](https://youtu.be/RRhzW4j8BtI)
+
+- [__Blinky Demo__](https://youtu.be/LNkmUIv7ZZc)
+
+- [__BL602 Simulator Demo__](https://youtu.be/Ag2CERd1OzQ)
+
+Try it here...
+
+https://appkaki.github.io/blockly-ulisp/demos/code/
+
+uLisp Firmware needs to be installed on the BL602 Board...
+
+https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
+
+Or try it with the BL602 Simulator in WebAssembly...
+
+https://appkaki.github.io/blockly-ulisp/demos/simulator/
+
+## Lisp Code Generator
+
+The following have been added into the existing [`generators`](generators) folder to generate Lisp code and to add blocks specific to uLisp...
+
+-   [`generators/lisp.js`](generators/lisp.js): Main interface for Lisp Code Generator
+
+-   [`generators/lisp`](generators/lisp): Lisp Code Generator for various blocks
+
+-   [`generators/lisp/lisp_library.xml`](generators/lisp/lisp_library.xml): Blocks XML file used by Block Exporter to generate the custom blocks
+
+The Lisp Code Generator is __incomplete__. The only blocks supported are...
+
+1.  Forever
+
+1.  On Start
+
+1.  Wait
+
+1.  GPIO Digital Write
+
+The Lisp Code Generator is based on Visual Embedded Rust...
+
+https://lupyuen.github.io/articles/advanced-topics-for-visual-embedded-rust-programming
+
+## Demo for Lisp Code Generator
+
+Watch the demo on YouTube...
+
+- [__LED Demo__](https://youtu.be/RRhzW4j8BtI)
+
+- [__Blinky Demo__](https://youtu.be/LNkmUIv7ZZc)
+
+- [__BL602 Simulator Demo__](https://youtu.be/Ag2CERd1OzQ)
+
+Try it here...
+
+https://appkaki.github.io/blockly-ulisp/demos/code/
+
+Or try it with the BL602 Simulator in WebAssembly...
+
+https://appkaki.github.io/blockly-ulisp/demos/simulator/
+
+The Blockly demo at [`demos/code`](demos/code) has been customised to include the Lisp Code Generator...
+
+-   [`demos/code/index.html`](demos/code/index.html): Customised to load the Lisp Code Generator and Lisp Blocks
+
+-   [`demos/code/code.js`](demos/code/code.js): Customised to load the Lisp Code Generator and Lisp Blocks
+
+The Blockly demo calls the [__Web Serial API__](https://web.dev/serial/) to transfer the generated uLisp Script to BL602...
+
+https://github.com/AppKaki/blockly-ulisp/blob/master/demos/code/code.js#L641-L738
+
+We assume that BL602 is running the uLisp Firmware and connected to our computer via USB...
+
+https://github.com/lupyuen/bl_iot_sdk/tree/ulisp/customer_app/sdk_app_ulisp
+
+The BL602 Simulator HTML and JavaScript files are here...
+
+-   [`demos/simulator/index.html`](demos/simulator/index.html): Customised to load the Lisp Code Generator, Lisp Blocks and BL602 Simulator
+
+-   [`demos/simulator/code.js`](demos/simulator/code.js): Customised to load the Lisp Code Generator, Lisp Blocks and BL602 Simulator
+
+The BL602 Simulator includes uLisp compiled for WebAssembly...
+
+https://github.com/lupyuen/ulisp-bl602/tree/wasm
+
+Inspired by MakeCode for BBC micro:bit...
+
+https://makecode.microbit.org/
 
 # Blockly [![Build Status]( https://travis-ci.org/google/blockly.svg?branch=master)](https://travis-ci.org/google/blockly)
 

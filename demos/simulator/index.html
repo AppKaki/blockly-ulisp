@@ -106,6 +106,19 @@
       <td height="99%" colspan=2 id="content_area">
       </td>
     </tr>
+
+    <!-- Canvas for Simulator -->
+    <tr>
+      <td colspan=2 align="center">
+        <canvas id="canvas" width="400" height="300"></canvas>
+        <textarea id="output" style="width: 300px; height: 300px;"></textarea>
+        <div class="spinner" id='spinner'></div>
+        <div class="emscripten" id="status"></div>    
+        <progress value="0" max="100" id="progress" hidden=1></progress>
+      </td>
+    </tr>
+    <!-- End -->
+
   </table>
   <div id="content_blocks" class="content"></div>
   <pre id="content_lisp" class="content prettyprint lang-lisp"></pre>
@@ -465,6 +478,248 @@
     <category name="%{BKY_CATVARIABLES}" colour="%{BKY_VARIABLES_HUE}" custom="VARIABLE"></category>
     <category name="%{BKY_CATFUNCTIONS}" colour="%{BKY_PROCEDURES_HUE}" custom="PROCEDURE"></category>
   </xml>
+
+  <!--  Emscripten Script: From ulisp.html  -->
+
+  <script type='text/javascript'>
+    var statusElement = document.getElementById('status');
+    var progressElement = document.getElementById('progress');
+    var spinnerElement = document.getElementById('spinner');
+
+    var Module = {
+      preRun: [],
+      postRun: [],
+      print: (function() {
+        var element = document.getElementById('output');
+        if (element) element.value = ''; // clear browser cache
+        return function(text) {
+          if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+          // These replacements are necessary if you render to raw HTML
+          //text = text.replace(/&/g, "&amp;");
+          //text = text.replace(/</g, "&lt;");
+          //text = text.replace(/>/g, "&gt;");
+          //text = text.replace('\n', '<br>', 'g');
+          console.log(text);
+          if (element) {
+            element.value += text + "\n";
+            element.scrollTop = element.scrollHeight; // focus on bottom
+          }
+        };
+      })(),
+      printErr: function(text) {
+        if (arguments.length > 1) text = Array.prototype.slice.call(arguments).join(' ');
+        console.error(text);
+      },
+      canvas: (function() {
+        var canvas = document.getElementById('canvas');
+
+        // As a default initial behavior, pop up an alert when webgl context is lost. To make your
+        // application robust, you may want to override this behavior before shipping!
+        // See http://www.khronos.org/registry/webgl/specs/latest/1.0/#5.15.2
+        canvas.addEventListener("webglcontextlost", function(e) { alert('WebGL context lost. You will need to reload the page.'); e.preventDefault(); }, false);
+
+        return canvas;
+      })(),
+      setStatus: function(text) {
+        if (!Module.setStatus.last) Module.setStatus.last = { time: Date.now(), text: '' };
+        if (text === Module.setStatus.last.text) return;
+        var m = text.match(/([^(]+)\((\d+(\.\d+)?)\/(\d+)\)/);
+        var now = Date.now();
+        if (m && now - Module.setStatus.last.time < 30) return; // if this is a progress update, skip it if too soon
+        Module.setStatus.last.time = now;
+        Module.setStatus.last.text = text;
+        if (m) {
+          text = m[1];
+          progressElement.value = parseInt(m[2])*100;
+          progressElement.max = parseInt(m[4])*100;
+          progressElement.hidden = false;
+          spinnerElement.hidden = false;
+        } else {
+          progressElement.value = null;
+          progressElement.max = null;
+          progressElement.hidden = true;
+          if (!text) spinnerElement.style.display = 'none';
+        }
+        statusElement.innerHTML = text;
+      },
+      totalDependencies: 0,
+      monitorRunDependencies: function(left) {
+        this.totalDependencies = Math.max(this.totalDependencies, left);
+        Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
+      }
+    };
+    Module.setStatus('Downloading...');
+    window.onerror = function(event) {
+      // TODO: do not warn on ok events like simulating an infinite loop or exitStatus
+      Module.setStatus('Exception thrown, see JavaScript console');
+      spinnerElement.style.display = 'none';
+      Module.setStatus = function(text) {
+        if (text) Module.printErr('[post-exception status] ' + text);
+      };
+    };
+  </script>
+
+  <!--  End of Emscripten Script  -->
+
+  <!--  Custom Script: TODO Sync with ulisp.html  -->
+  <script type="text/javascript">
+
+    /// JSON Stream of Simulation Events emitted by uLisp Interpreter. Looks like...
+    ///  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+    ///    { "time_delay": { "ticks": 1000 } }, ... ]
+    let simulation_events = [];
+
+    /// Wait for emscripten to be initialised
+    Module.onRuntimeInitialized = function() {
+      //  Init uLisp interpreter
+      Module.print("Init uLisp...\n");
+      Module._setup_ulisp();
+
+      // Load the simulator pic and render it
+      const image = new Image();
+      image.onload = renderSimulator;  //  Draw when image has loaded
+      image.src = 'pinecone.png';      //  Image to be loaded
+    };
+
+    /// Render the simulator pic. Based on https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/drawImage
+    function renderSimulator() {
+      //  Get the HTML canvas and context
+      const canvas = document.getElementById('canvas');
+      const ctx = canvas.getContext('2d');
+
+      //  Resize the canvas
+      canvas.width  = 400;
+      canvas.height = 300;
+
+      //  Draw the image to fill the canvas
+      ctx.drawImage(this, 0, 0, canvas.width, canvas.height);
+    }
+
+    /// Run the provided script
+    function runScript(scr) { //// TODO
+      //  Get the uLisp script 
+      //  var scr = "( list 1 2 3 )";
+      //// TODO: const scr = document.getElementById("input").value;
+
+      //  Allocate WebAssembly memory for the script
+      const scr_ptr = Module.allocate(intArrayFromString(scr), ALLOC_NORMAL);
+
+      //  Catch any errors so that we can free the allocated memory
+      try {
+        //  Clear the JSON Stream of Simulation Events in WebAssembly
+        Module._clear_simulation_events();
+
+        //  Execute the uLisp script in WebAssembly
+        Module.print("\nExecute uLisp: " + scr + "\n");
+        Module._execute_ulisp(scr_ptr);
+
+        //  Get the JSON string of Simulation Events from WebAssembly. Looks like...
+        //  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+        //    { "time_delay": { "ticks": 1000 } }, ... ]
+        const json_ptr = Module._get_simulation_events();
+
+        //  Convert the JSON string from WebAssembly to JavaScript
+        const json = Module.UTF8ToString(json_ptr);
+
+        //  Parse the JSON Stream of Simulation Events
+        simulation_events = JSON.parse(json);
+        Module.print("Events: " + JSON.stringify(simulation_events, null, 2) + "\n");
+      } catch(err) {
+        //  Catch and show any errors
+        console.error(err);
+      } finally {
+        //  Free the WebAssembly memory allocated for the script
+        Module._free(scr_ptr);
+      }
+
+      //  Start a timer to simulate the returned events
+      if (simulation_events.length > 0) {
+        window.setTimeout("simulateEvents()", 1);
+      }
+
+      //  More about passing strings between JavaScript and C WebAssembly:
+      //  https://emscripten.org/docs/porting/connecting_cpp_and_javascript/Interacting-with-code.html
+      //  https://stackoverflow.com/questions/46815205/how-to-pass-a-string-to-c-code-compiled-with-emscripten-for-webassembly
+    }
+
+    /// Simulate the BL602 Simulation Events recorded in simulate_events, which contains...
+    ///  [ { "gpio_output_set": { "pin": 11, "value": 1 } }, 
+    ///    { "time_delay": { "ticks": 1000 } }, ... ]
+    function simulateEvents() {
+      //  Take the first event and update the queue
+      if (simulation_events.length == 0) { return; }
+      const event = simulation_events.shift();
+      //  event looks like:
+      //  { "gpio_output_set": { "pin": 11, "value": 1 } }
+
+      //  Get the event type and parameters
+      const event_type = Object.keys(event)[0];
+      const args = event[event_type];
+
+      //  Timeout in milliseconds to the next event
+      let timeout = 1;
+
+      //  Handle each event type
+      switch (event_type) {
+
+        //  Set GPIO output
+        //  { "gpio_output_set": { "pin": 11, "value": 1 } }
+        case "gpio_output_set": timeout += gpio_output_set(args.pin, args.value); break;
+
+        //  Delay
+        //  { "time_delay": { "ticks": 1000 } }
+        case "time_delay": timeout += time_delay(args.ticks); break;
+
+        //  Unknown event type
+        default: throw new Error("Unknown event type: " + event_type);
+      }
+
+      //  Simulate the next event
+      if (simulation_events.length > 0) {
+        window.setTimeout("simulateEvents()", timeout);
+      }
+    }
+
+    /// Simulate setting GPIO pin output to value 0 (Low) or 1 (High):
+    /// { "gpio_output_set": { "pin": 11, "value": 1 } }
+    function gpio_output_set(pin, value) {
+      //  Get the HTML Canvas Context
+      const ctx = document.getElementById('canvas').getContext('2d');
+
+      //  Set the simulated LED colour depending on value
+      switch (value) {
+        //  Set GPIO to Low (LED on)
+        case 0: ctx.fillStyle = '#B0B0FF'; break;  //  Blue
+
+        //  Set GPIO to High (LED off)
+        case 1: ctx.fillStyle = '#CCCCCC'; break;  //  Grey
+
+        //  Unknown value
+        default: throw new Error("Unknown gpio_output_set value: " + args.value);
+      }
+
+      //  Draw the LED colour
+      ctx.fillRect(315, 116, 35, 74);
+
+      //  Simulate next event in 0 milliseconds
+      return 0;
+    }
+
+    /// Simulate a delay for the specified number of ticks (1 tick = 1 millisecond)
+    /// { "time_delay": { "ticks": 1000 } }
+    function time_delay(ticks) {
+      //  Simulate the next event in "ticks" milliseconds
+      return ticks;
+    }
+
+  </script>    
+  <!--  End of Custom Script  -->
+
+  <!--  Load Emscripten WebAssembly: From ulisp.html  -->
+
+  <script async type="text/javascript" src="ulisp.js"></script>
+
+  <!--  End of Emscripten WebAssembly  -->
 
 </body>
 </html>
